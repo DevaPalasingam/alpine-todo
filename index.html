@@ -14,7 +14,7 @@
   </head>
   <body>
     <main class="container">
-      <div x-data="todoFuncs()">
+      <div x-data="todoFuncs">
         <form x-on:submit.prevent>
           <label for="todoItem">
             Add some todos
@@ -28,30 +28,30 @@
           </label>
           <button x-on:click="todoFuncs.addTodo()" role="button">Add</button>
         </form>
-        <template x-for="todo in todos">
+        <template x-for="todo in todoFuncs.todos">
           <div>
             <input type="checkbox" id="terms" name="terms" />
-            <span x-text="todo.item"></span>
+            <span x-text="todo"></span>
           </div>
         </template>
       </div>
     </main>
     <script>
-      function todoFuncs() {
-        return {
-          todos: [],
-          userInput: "",
-          addTodo() {
-            // if (this.userInput) {
-            //   this.todos.push({
-            //     item: this.userInput,
-            //     completed: false,
-            //   });
-            //   this.userInput = "";
-            this.todos.push(this.userInput);
-          },
-        };
-      }
+      let todoFuncs = {
+        todos: [],
+        userInput: "",
+        addTodo() {
+          console.log("adding Todo");
+          // if (this.userInput) {
+          //   this.todos.push({
+          //     item: this.userInput,
+          //     completed: false,
+          //   });
+          //   this.userInput = "";
+          this.todos.push(this.userInput);
+          console.log(this.todos);
+        },
+      };
     </script>
   </body>
 </html>
