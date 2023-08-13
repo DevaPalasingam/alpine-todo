@@ -18,14 +18,18 @@
         x-data="{
           todos: [],
           userInput: '',
+          todoChecked: {},
           addTodo() {
             if(this.userInput.trim()) {
-              this.todos.push({id: Date.now(), item: this.userInput});
+              const id = Date.now();
+              this.todos.push({id: id, item: this.userInput});
+              this.todoChecked[id] = false
             }
             this.userInput = '';
           },
           removeTodo(todoItem) {
             this.todos = this.todos.filter(item => item.id !== todoItem.id)
+            delete this.todoChecked[todoItem.id]
           }
         }"
       >
@@ -46,7 +50,13 @@
         </form>
         <template x-for="todo in todos">
           <div style="padding-top: 5px">
-            <input type="checkbox" id="terms" name="terms" />
+            <input
+              type="checkbox"
+              x-bind:checked="todoChecked[todo.id]"
+              x-on:input="todoChecked[todo.id] = !todoChecked[todo.id]"
+              id="terms"
+              name="terms"
+            />
             <span x-text="todo.item"></span>
             <button
               role="button"
@@ -59,7 +69,7 @@
           </div>
         </template>
         <button
-          x-on:click="todos = []"
+          x-on:click="todos = []; todoChecked = {}"
           x-show="todos.length"
           class="outline"
           style="width: 7rem"
