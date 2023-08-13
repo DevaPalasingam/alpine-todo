@@ -14,44 +14,59 @@
   </head>
   <body>
     <main class="container">
-      <div x-data="todoFuncs">
+      <div
+        x-data="{
+          todos: [],
+          userInput: '',
+          addTodo() {
+            if(this.userInput.trim()) {
+              this.todos.push(this.userInput);
+            }
+            this.userInput = '';
+          },
+          removeTodo(todoItem) {
+            this.todos = this.todos.filter(item => item !== todoItem)
+          }
+        }"
+      >
         <form x-on:submit.prevent>
           <label for="todoItem">
             Add some todos
             <input
-              x-model="todoFuncs.userInput"
+              x-model="userInput"
               type="text"
               id="todoItem"
               name="todoItem"
               placeholder="Drink some water"
             />
           </label>
-          <button x-on:click="todoFuncs.addTodo()" role="button">Add</button>
+          <button x-on:click="addTodo()" role="button" style="width: 5rem">
+            Add
+          </button>
         </form>
-        <template x-for="todo in todoFuncs.todos">
-          <div>
+        <template x-for="todo in todos">
+          <div style="padding-top: 5px">
             <input type="checkbox" id="terms" name="terms" />
             <span x-text="todo"></span>
+            <button
+              role="button"
+              class="secondary"
+              x-on:click="removeTodo(todo)"
+              style="padding: 0 6px 0 6px; width: 2rem"
+            >
+              x
+            </button>
           </div>
         </template>
+        <button
+          x-on:click="todos = []"
+          x-show="todos.length"
+          class="outline"
+          style="width: 7rem"
+        >
+          Clear All
+        </button>
       </div>
     </main>
-    <script>
-      let todoFuncs = {
-        todos: [],
-        userInput: "",
-        addTodo() {
-          console.log("adding Todo");
-          // if (this.userInput) {
-          //   this.todos.push({
-          //     item: this.userInput,
-          //     completed: false,
-          //   });
-          //   this.userInput = "";
-          this.todos.push(this.userInput);
-          console.log(this.todos);
-        },
-      };
-    </script>
   </body>
 </html>
